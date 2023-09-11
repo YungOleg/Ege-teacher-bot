@@ -1,1 +1,1 @@
-# Ege-teacher-bot
+# Ege teacher bot
