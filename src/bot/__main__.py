@@ -3,7 +3,7 @@ import logging
 
 from aiogram import Bot
 from dispatcher import get_dispatcher
-from util.config import config
+from src.config import config
 from util.commands_description import register_commands_description
 
 
@@ -25,5 +25,6 @@ def main():
 
 
 if __name__ == "__main__":
+    #! ege-bot-venv\Scripts\activate
     #! poetry run python src\bot\__main__.py
     main()
