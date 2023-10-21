@@ -2,14 +2,15 @@ from aiogram import Router, F
 from aiogram.filters import Command
 from aiogram.types import Message, CallbackQuery
 from structures.keyboards.ru_practice_types_keyboard import RU_PRACTICE_TYPES_KEYBOARD
+from structures.keyboards.quiz_amount_keyboard import QUIZ_AMOUNT_KEYBOARD
 from structures.callback_data.ru_callback_data import RuCD, RuCDAction
-from src.db.tasks_db.ru_b4 import get_b4_quiz
+from src.db.tasks_db.static.ru_b4 import get_b4_quiz
 
 ru_router = Router(name='ru')
 
 @ru_router.message(F.text=="Русский язык")
 async def training_types(message: Message):
-    await message.answer(text="Выбери тип тренировки📊", reply_markup=RU_PRACTICE_TYPES_KEYBOARD)
+    await message.answer(text="Выбери режим тренировки📊", reply_markup=RU_PRACTICE_TYPES_KEYBOARD)
 
 """
 [theory_mode_button],
@@ -31,14 +32,26 @@ async def theory_mode_ru(call: CallbackQuery):
 @ru_router.callback_query(RuCD.filter(F.action == RuCDAction.QUIZ_MODE))
 async def quiz_mode_ru(call: CallbackQuery):
     # TODO: https://ru.stackoverflow.com/questions/1299118/aiogram-bot-quiz
-    # ссылка на решение для квиза
-    task, answer = await get_b4_quiz()
-    await call.message.answer_poll(
-        question="Выбери правильное ударение", options=[task[0], task[1]], 
-        type='quiz', correct_option_id=answer, is_anonymous=False, 
-        open_period=20
-        )
+    
+    await call.message.answer("Выбери сколько заданий подряд ты хочешь решить", reply_markup=QUIZ_AMOUNT_KEYBOARD)
     await call.answer()
+
+
+@ru_router.callback_query(F.data == "quiz_5_tasks")
+async def quiz_5_tasks(call: CallbackQuery):
+    right_answers = 0
+    for i in range(5):
+        task, answer = await get_b4_quiz()
+        poll_message = await call.message.answer_poll(
+            question="Выбери правильное ударение", options=[task[0], task[1]], 
+            type='quiz', correct_option_id=answer, is_anonymous=False, 
+            open_period=20
+            )
+        response = await poll_message.poll.wait()
+        if response.option_ids[0] == answer:
+            right_answers += 1
+    await call.message.answer(f"Правильных ответов: {right_answers}")
+
 
 
 @ru_router.callback_query(RuCD.filter(F.action == RuCDAction.THEME_MODE))

@@ -2,8 +2,10 @@ import random
 from typing import List, Tuple
 
 
+#? path: ../tasks_db/ru_b4_task.txt 
+
 async def _get_random_pair() -> List[str]:
-    with open("C:\\Users\\bilk5\\Desktop\\Ege-teacher-bot\\src\\db\\tasks_db\\ru_b4_task.txt", "r", encoding="utf-8") as file:
+    with open("C:\\Users\\bilk5\\Desktop\\Ege-teacher-bot\\src\\db\\tasks_db\\static\\ru_b4_task.txt", "r", encoding="utf-8") as file:
         lines = file.readlines()
         random_line = random.choice(lines)
         separated_random_line = random_line.split("-")

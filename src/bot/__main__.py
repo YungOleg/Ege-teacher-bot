@@ -25,6 +25,4 @@ def main():
 
 
 if __name__ == "__main__":
-    #! ege-bot-venv\Scripts\activate
-    #! poetry run python src\bot\__main__.py
     main()
