@@ -7,7 +7,7 @@ from src.config import config
 from util.commands_description import register_commands_description
 
 
-async def start_bot():
+async def start_bot() -> None:
     bot: Bot = Bot(config.bot.token)
     # storage = MemoryStorage() # redis storage
     dp = get_dispatcher()
@@ -16,7 +16,7 @@ async def start_bot():
     await dp.start_polling(bot)
 
 
-def main():
+def main() -> None:
     try:
         logging.basicConfig(level=logging.INFO)
         asyncio.run(start_bot())

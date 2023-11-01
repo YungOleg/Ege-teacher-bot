@@ -1,7 +1,6 @@
 import random 
 from typing import List, Tuple
 
-
 #? path: ../tasks_db/ru_b4_task.txt 
 
 async def _get_random_pair() -> List[str]:
